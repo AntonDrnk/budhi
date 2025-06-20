@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budhi - Ignite inner harmony</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #F4F6F0;
+            --text-color: #343E33;
+            --accent-primary: #58745E;
+            --accent-secondary: #D9D9C7;
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+        html { scroll-behavior: smooth; }
+        body { margin: 0; font-family: var(--font-sans); background-color: var(--bg-color); color: var(--text-color); line-height: 1.7; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 600; }
+        a { color: var(--accent-primary); text-decoration: none; transition: color 0.3s; }
+        a:hover { color: var(--text-color); }
+
+        @keyframes mystical-glow {
+            0%, 100% { text-shadow: 0 0 8px rgba(255, 255, 255, 0.6), 0 0 18px rgba(88, 116, 94, 0.5), 0 0 28px rgba(88, 116, 94, 0.4); }
+            50% { text-shadow: 0 0 12px rgba(255, 255, 255, 0.7), 0 0 24px rgba(88, 116, 94, 0.6), 0 0 38px rgba(88, 116, 94, 0.5); }
+        }
+
+        .hero-section {
+            height: 100svh;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background-image: linear-gradient(rgba(40, 48, 40, 0.6), rgba(40, 48, 40, 0.6)), url('img/layer-base.png');
+            background-size: cover;
+            background-position: center;
+        }
+        .main-nav {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            box-sizing: border-box;
+        }
+        .logo { font-family: var(--font-serif); font-size: 28px; font-weight: 600; letter-spacing: 2px; color: white;}
+        .main-nav ul { list-style: none; display: flex; gap: 30px; margin: 0; padding: 0; }
+        .main-nav a { color: white; font-size: 16px; }
+        
+        .hero-content h1 {
+            font-size: clamp(1.9rem, 8vw, 4.5rem); 
+            white-space: nowrap;
+            font-weight: 400; 
+            color: white; 
+            margin: 0; 
+            max-width: 95%;
+            animation: mystical-glow 6s ease-in-out infinite;
+        }
+        .hero-content p { font-size: 1.2em; max-width: 600px; font-weight: 300; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); }
+        .cta-button { background-color: var(--accent-primary); color: white; padding: 18px 40px; border-radius: 50px; text-transform: none; font-family: var(--font-sans); font-weight: 600; letter-spacing: 0.5px; margin-top: 30px; display: inline-block; border: none; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .cta-button:hover { background-color: #6a8c73; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s; transition-timing-function: ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .content-section { padding: 100px 0; }
+        .content-section h2 {
+            text-align: center;
+            font-size: clamp(2.2rem, 6vw, 3.5rem);
+            margin-bottom: 60px;
+            color: var(--text-color);
+        }
+        .concept-flex { display: flex; align-items: center; gap: 60px; }
+        .concept-text { flex: 1.2; }
+        .concept-visual { flex: 1; text-align: center; }
+        .concept-visual img { max-width: 100%; border-radius: 10px; }
+        
+        #gallery {
+             padding-top: 0;
+        }
+        .scrolling-gallery-container {
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            /* ▼▼▼ ОСНОВНІ ЗМІНИ ТУТ ▼▼▼ */
+            scroll-snap-type: x mandatory; /* Вмикаємо "прилипання" по осі X */
+            scroll-padding: 0 5%; /* Додаємо відступи з боків, щоб центральний елемент був точно по центру */
+            -webkit-overflow-scrolling: touch;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrolling-gallery-container::-webkit-scrollbar {
+            display: none;
+        }
+        .scrolling-gallery {
+            display: flex;
+            gap: 20px;
+            padding: 20px 0;
+        }
+        .gallery-item {
+            flex: 0 0 90%; /* Робимо картку трохи вужчою за екран для кращого ефекту */
+            height: 450px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            scroll-snap-align: center; /* Прилипаємо до ЦЕНТРУ */
+            position: relative;
+            overflow: hidden;
+        }
+        @media (min-width: 768px) {
+            .gallery-item {
+                flex: 0 0 350px; /* На десктопі ширина менша */
+            }
+            .scrolling-gallery-container {
+                 scroll-padding: 0; /* На десктопі відступи не потрібні */
+            }
+             .gallery-item {
+                scroll-snap-align: start; /* На десктопі прилипаємо до початку */
+            }
+        }
+        .gallery-item:hover {
+            transform: scale(1.03);
+        }
+
+        .quiz-section { background-color: var(--accent-secondary); color: var(--text-color); padding: 80px 0; text-align: center; }
+        .quiz-section h2 { font-size: clamp(2rem, 5.5vw, 3rem); }
+        .quiz-section .subtitle { margin-bottom: 40px; }
+        .quiz-form { max-width: 500px; margin: 0 auto; }
+        .quiz-question { margin-bottom: 20px; text-align: left; }
+        .quiz-question label { display: block; margin-bottom: 8px; font-weight: 400; font-size: 1.1em;}
+        .quiz-question select { width: 100%; padding: 15px; border: 1px solid #b7b7a9; background-color: #e4e4d8; color: var(--text-color); border-radius: 5px; font-size: 16px; font-family: var(--font-sans); }
+        .quiz-section .cta-button { background-color: var(--accent-primary); }
+        
+        .products-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 40px; 
+            align-items: stretch;
+        }
+        .product-card {
+            background-color: transparent;
+            min-height: 650px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .product-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        .product-card.is-flipped .product-card-inner {
+            transform: rotateY(180deg);
+        }
+        .product-card.is-highlighted .product-card-front {
+            box-shadow: 0 0 0 3px var(--accent-primary), 0 8px 30px rgba(0,0,0,0.2);
+            transform: scale(1.02);
+        }
+
+        .product-card-front, .product-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .product-card-front {
+            background-color: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow 0.4s, transform 0.4s;
+        }
+        .product-card:hover .product-card-front:not(.is-highlighted) {
+             box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+             transform: translateY(-5px);
+        }
+        .product-card-front .product-image-wrapper {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+        }
+        .product-card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(30%) brightness(90%);
+            transition: transform 0.4s ease-out, filter 0.4s ease-out;
+        }
+        .product-card:hover .product-card-front img {
+            filter: none;
+            transform: scale(1.05);
+        }
+        .product-card-front .card-content-wrapper {
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .product-card-front h3 { font-size: 1.6em; margin: 0; color: var(--text-color); }
+        .product-card-front .frequency { font-size: 1em; color: var(--accent-primary); font-weight: 600; margin: 5px 0 10px 0; }
+        .product-card-front .intention { 
+            font-size: 0.9em; 
+            line-height: 1.5;
+            flex-grow: 1;
+            margin: 0 0 10px 0;
+            color: var(--text-color);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .product-card-front .price { font-size: 1.3em; font-weight: 600; margin-top: auto; color: var(--text-color); }
+        .product-card-front .add-to-cart-button {
+            background-color: transparent;
+            border: 2px solid var(--accent-primary);
+            color: var(--accent-primary);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 0.9em;
+            text-transform: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+        .product-card-front .add-to-cart-button:hover { background-color: var(--accent-primary); color: white; }
+
+        .product-card-back {
+            background-color: #ECEAE6;
+            color: var(--text-color);
+            transform: rotateY(180deg);
+            padding: 25px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card-back-content {
+            flex-grow: 1;
+        }
+        .product-card-back h4 {
+            font-size: 1.4em;
+            color: var(--accent-primary);
+            margin: 0 0 10px 0;
+            border-bottom: 1px solid var(--accent-secondary);
+            padding-bottom: 5px;
+        }
+        .product-card-back p { font-size: 0.9em; margin: 0 0 15px 0; }
+        .product-card-back .notes-list { font-size: 0.9em; list-style: none; padding: 0; margin: 0 0 15px 0; }
+        .product-card-back .notes-list strong { font-weight: 600; color: var(--text-color); }
+        .product-card-back .price-cta-wrapper {
+            margin-top: auto;
+            padding-top: 15px; 
+            text-align: center;
+        }
+        .product-card-back .price { font-size: 1.6em; font-weight: 600; margin-bottom: 15px; }
+        .product-card-back .add-to-cart-button {
+             background-color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            font-size: 0.9em;
+        }
+        .product-card-back .add-to-cart-button:hover { background-color: transparent; color: var(--accent-primary); }
+
+        .product-switcher { text-align: center; margin-bottom: 40px; }
+        .switcher-btn { font-family: var(--font-sans); font-size: 1em; font-weight: 600; padding: 10px 25px; margin: 0 10px; border-radius: 50px; border: 2px solid var(--accent-secondary); background-color: transparent; color: var(--text-color); cursor: pointer; transition: all 0.3s; }
+        .switcher-btn.active { background-color: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+        .affirmation-section { padding: 40px 20px; text-align: center; }
+        .affirmation-section h3 { font-size: 1.5em; font-weight: 400; color: var(--accent-primary); margin: 0 0 10px 0; }
+        #affirmation-text { font-family: var(--font-serif); font-size: 1.8em; font-style: italic; color: var(--text-color); max-width: 700px; margin: 0 auto; }
+        .footer { background-color: #EAECE4; color: #5f5f5f; text-align: center; padding: 50px 0; margin-top: 0; font-size: 0.9em; }
+        .footer a { color: var(--text-color); font-weight: 600; }
+        
+        @media (max-width: 768px) {
+            .main-nav { position: absolute; top: 15px; left:0; right:0; transform:none; width:100%; flex-direction: column; gap: 15px; padding: 0; }
+            .main-nav ul { padding: 0; gap: 20px; }
+            .hero-content { margin-top: 60px; }
+            .hero-content p { font-size: 1.1em; }
+            #affirmation-text { font-size: 1.5em; }
+            .content-section, .quiz-section { padding: 60px 0; }
+            .concept-flex { flex-direction: column; gap: 40px; }
+            .products-grid { grid-template-columns: 1fr; gap: 50px; }
+        }
+
+        /* За замовчуванням */
+        .mobile-only-image {
+        display: none;
+        }
+
+        .desktop-only-image {
+        display: block;
+        }
+
+        /* На мобільних */
+        @media (max-width: 767px) {
+        .mobile-only-image {
+            display: block !important;
+        }
+        .desktop-only-image {
+            display: none !important;
+        }
+        }
+    </style>
+     </style>
+</head>
+<body>
+    
+    <header class="hero-section">
+        <nav class="main-nav">
+            <div class="logo">Budhi Soma</div>
+            <ul>
+                <li><a href="#concept">Концепція</a></li>
+                <li><a href="#products">Колекція</a></li>
+                <li><a href="#quiz">Знайти аромат</a></li>
+            </ul>
+        </nav>
+        <div class="container">
+            <div class="hero-content">
+                <h1>Ignite inner harmony</h1>
+                <p>Відкрийте світ ароматичних свічок та парфумів "Budhi", створених для пробудження вашої внутрішньої гармонії та спокою.</p>
+                <a href="#quiz" class="cta-button">Знайти свій аромат</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="concept" class="content-section">
+            <div class="container">
+                <h2 class="reveal">Що таке частота аромату?</h2>
+                <div class="concept-flex">
+                  <div class="concept-text reveal">
+                    <p>Все у Всесвіті вібрує на певній частоті, включно з нами. Стрес та метушня порушують наш природний резонанс.</p>
+                    <p>Ми вивчаємо вплив звукових хвиль (частот Сольфеджіо) на структуру ефірних олій. Кожен наш аромат «налаштований» на конкретну частоту — наприклад, <b>432 Гц (гармонія)</b> або <b>528 Гц (любов та трансформація)</b>.</p>
+                    <p>Вдихаючи такий аромат, ви допомагаєте своєму тілу та свідомості повернутися до стану спокою та сили.</p>
+              
+                    
+                    <h2 class="reveal"> Як це працює?</h2>
+                    <p> Кожна частота впливає на певний психоемоційний стан. Так само і аромати мають свої "вібрації" — тобто, властивості, які гармонізують ті ж самі стани.<br>
+                      Тож ми можемо зіставити певні частоти з ефірними оліями, які резонують з ними.</p>
+
+                      <!-- Мобільна картинка -->
+                    <img src="img/concept-3.png" alt="Ілюстрація роботи частоти аромату" class="mobile-only-image" style="max-width: 100%; height: auto; margin: 20px 0; display: none;">
+              
+              
+                    <p>Поєднання Сольфеджіо частот із ароматами ефірних олій — це сильна комбінація, яка працює на двох рівнях одночасно:</p>
+                    <ul>
+                      <li>🔊 вібраційно через звук</li>
+                      <li>🌿 сенсорно через запах</li>
+                    </ul>
+                  </div>
+                  <div class="concept-visual reveal">
+                    <!-- Десктопна картинка -->
+                    <img src="img/concept-3.png" alt="Візуалізація аури та частоти" class="desktop-only-image" style="max-height: 100%; width: auto;">
+                  </div>
+                </div>
+              </div>
+        </section>
+
+        <section id="gallery" class="content-section">
+            <div class="container">
+                <h2 class="reveal">Світ BUDDHI</h2>
+            </div>
+            <div class="scrolling-gallery-container">
+                <div class="scrolling-gallery" id="scrolling-gallery">
+                    </div>
+            </div>
+        </section>
+
+
+        <section id="quiz" class="quiz-section">
+            <div class="container">
+                <h2 class="reveal">Який аромат потрібен вам саме зараз?</h2>
+                <p class="subtitle reveal">Дайте відповідь на 2 запитання, щоб знайти свою ідеальну частоту.</p>
+                <form class="quiz-form reveal" id="quiz-form">
+                    <div class="quiz-question"><label for="state-select">Який стан ви хочете віднайти?</label><select id="state-select"><option value="grounding,resource,calm">Спокій та внутрішню опору</option><option value="cleansing,lightness,emotional-reset,pause">Емоційне очищення та легкість</option><option value="joy,energy,lightness">Радість, енергію та смак до життя</option><option value="tenderness,warmth,sensuality,pleasure,heart-opening">Ніжність, тепло та чуттєвість</option><option value="clarity,new-start,intuition">Ясність думки та зв'язок з інтуїцією</option></select></div>
+                    <div class="quiz-question"><label for="metaphor-select">Оберіть метафору, що вам відгукується:</label><select id="metaphor-select"><option value="grounding,resource">Міцне коріння старого дерева</option><option value="cleansing,emotional-reset">Тихий дощ, що змиває пил</option><option value="new-start,clarity,joy">Перший промінь сонця на світанку</option><option value="tenderness,warmth,self-care">Теплі обійми кашемірового пледу</option><option value="intuition,sensuality,depth">Таємниче світло нічного місяця</option></select></div>
+                    <button type="submit" class="cta-button">Показати мій аромат</button>
+                </form>
+                <div id="quiz-result" class="quiz-result-wrapper"></div>
+            </div>
+        </section>
+        <section id="products" class="content-section">
+            <div class="container">
+                <h2 class="reveal">Колекція наших частот</h2>
+                <div class="product-switcher reveal" id="product-switcher">
+                    <button class="switcher-btn active" data-category="candles">Свічки</button>
+                    <button class="switcher-btn" data-category="perfumes">Парфуми</button>
+                </div>
+                <div class="products-grid" id="products-grid"></div>
+            </div>
+        </section>
+    </main>
+
+    <div class="affirmation-section reveal">
+        <h3>Афірмація дня</h3>
+        <p id="affirmation-text">...</p>
+    </div>
+
+    <footer class="footer">
+        <div class="container"><p>&copy; 2025 BUDDHI. Всі права захищені.</p><p><a href="mailto:wisdom@buddhi.com">wisdom@buddhi.com</a></p></div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const allProducts = [
+                // --- СВІЧКИ ---
+                { category: "candles", id: 1, name: "Свічка Mudhāra", image: "img/Mudhara.jpg", frequency: "Мигдаль • Рис • Ваніль", intention: "Щоб повернути собі ґрунт під ногами та відновити внутрішній ресурс.", price: "1500 ₴", tags: ["grounding", "resource", "calm", "body-connection", "warmth"], details: { title: "Mudhāra: корінь та опора", description: "Mudhāra — образ кореня, опори, джерела внутрішньої сили. Для тих, хто відчуває втому, розпорошеність, втрату контакту з тілом.", properties: "Мигдаль живить та заспокоює шкіру, ваніль знижує тривожність і викликає почуття безпеки, а рисові ноти дарують м’якість, тілесність і тепло." }},
+                { category: "candles", id: 2, name: "Свічка Jaladhara", image: "img/Jaladhara.jpg", frequency: "Петрікор • Жасмин", intention: "Щоб очистити розум і серце, вийти з турбот у тишу.", price: "1500 ₴", tags: ["cleansing", "release", "calm", "emotional-reset"], details: { title: "Jaladhara: потік та очищення", description: "Jaladhara — потік води. Символ очищення, спокою, емоційного перезавантаження. Для тих, хто втомився від інформаційного шуму.", properties: "Жасмин підтримує жіночу енергію та знижує напругу, тоді як пачулі/петрикор заземлює, гасить стрес і допомагає відпустити зайве." }},
+                { category: "candles", id: 3, name: "Свічка Asadha", image: "img/Asadha.jpg", frequency: "Груша • Вишня • Кавун", intention: "Щоб пробудити життєрадісність та повернути собі легкість.", price: "1500 ₴", tags: ["joy", "energy", "lightness"], details: { title: "Asadha: буяння життя", description: "Asadha — індійський місяць дощів і жіночої сили. Для тих, хто втратив смак до життя і відчуває втому від рутини.", properties: "Фруктові есенції стимулюють легкість та радість, а м’ята з кавуном освіжають та додають енергії для тілесної насолоди." }},
+                { category: "candles", id: 4, name: "Свічка Aurora", image: "img/Aurora.jpg", frequency: "Бамбук • Шипр • Лаванда", intention: "Щоб почати з чистого аркуша та відновити ясність.", price: "1500 ₴", tags: ["new-start", "clarity", "balance", "cleansing"], details: { title: "Aurora: чистота початку", description: "Aurora — перше світло дня. Пробудження, оновлення. Для тих, хто прокидається в тумані думок або потребує нового старту.", properties: "Бамбук освіжає і балансує, шипр додає глибини і допомагає зібратись, а лаванда заспокоює та знімає напругу." }},
+                { category: "candles", id: 5, name: "Свічка Seraphine", image: "img/Seraphine.jpg", frequency: "Скошена трава • Роза • Сандал", intention: "Щоб відчути тепло у собі та відновити ніжність.", price: "1600 ₴", tags: ["tenderness", "warmth", "heart-opening", "self-care", "calm"], details: { title: "Seraphine: вогонь ніжності", description: "Образ ніжного захисту та тепла для тих, хто не дозволяє собі м’якості та багато віддає.", properties: "Скошена трава освіжає і виводить із застою, роза розкриває серце і заспокоює, а сандал глибоко заземлює і врівноважує." }},
+                { category: "candles", id: 6, name: "Свічка Sundara", image: "img/Sundara.jpg", frequency: "Ірис • Шоколад • Кава", intention: "Щоб розбудити красу в кожному русі та насолоджуватись моментом.", price: "1600 ₴", tags: ["beauty", "depth", "pleasure", "focus", "warmth"], details: { title: "Sundara: внутрішня краса", description: "Sundara — санскритом «прекрасна». Внутрішня естетика, краса в деталях. Для тих, хто хоче повернути собі відчуття глибини.", properties: "Ірис розслаблює і робить аромат вишуканим, кава додає фокусу і стимулює, а какао створює відчуття затишку." }},
+                { category: "candles", id: 7, name: "Свічка Nectar", image: "img/Nectar.jpg", frequency: "Жасмин • Османтус • Квіткові воски", intention: "Щоб згадати, як це — відчувати, та повернути чуттєвість.", price: "1600 ₴", tags: ["sensuality", "pleasure", "body-connection", "joy", "heart-opening"], details: { title: "Nectar: суть чуттєвості", description: "Nectar — солодкий дар квітів, жіночий нектар. Для тих, хто втратив зв’язок із тілом і забув про задоволення.", properties: "Жасмин тонізує і збуджує уяву, османтус розкриває серце і знімає тривожність, а квіткові есенції додають солодкості і м’якості." }},
+                { category: "candles", id: 8, name: "Свічка Chandra", image: "img/Chandra.jpg", frequency: "Бергамот • Орхідея • Лаванда", intention: "Щоб повернутись у тіло, відчути інтуїцію та випустити дихання.", price: "1600 ₴", tags: ["intuition", "body-connection", "emotional-reset", "depth", "calm"], details: { title: "Chandra: тиха енергія ночі", description: "Chandra — санскритом «місяць». Тиха, інтуїтивна енергія. Для тих, хто живе в розумі й втомився від постійного контролю.", properties: "Бергамот покращує настрій, орхідея додає ніжності, а лаванда стабілізує емоції, допомагаючи випустити дихання." }},
+                { category: "candles", id: 9, name: "Свічка Purity", image: "img/Purity.jpg", frequency: "Лен • Конвалія", intention: "Щоб дати собі паузу, впустити простір і відчути легкість.", price: "1500 ₴", tags: ["lightness", "simplicity", "pause", "cleansing", "new-start"], details: { title: "Purity: чистота і простота", description: "Суть без прикрас, ніжність істинності. Для тих, хто втомився від перевантаження, складності та метушні.", properties: "Льон дарує м’якість, спокій та ніжну турботу, а конвалія — делікатну свіжість і жіночу чистоту." }},
+                
+                // --- ПАРФУМИ ---
+                { category: "perfumes", id: 21, name: "Парфум LAKSHMI", frequency: "Грейпфрут • Табак • Сандал", image: "img/lakshmi.jpg", intention: "Заземлює, стабілізує, дає відчуття внутрішньої опори.", tags: ["grounding", "resource", "calm", "body-connection", "warmth"], 
+                  details: { title: "LAKSHMI: Богиня достатку", description: "Втілює внутрішній і зовнішній добробут. Пов'язаний з чакрою Муладхара (стабільність, ресурси).", affirmation: "«Я у безпеці. Я заслуговую на процвітання.»", notes: { top: "Грейпфрут, перець", heart: "Табак, шкіра, скошена трава", base: "Сандал, ваніль, гаякове дерево" }, properties: "Пробуджує силу і сміливість приймати матеріальні блага." }
+                },
+                { category: "perfumes", id: 22, name: "Парфум OJAS", frequency: "Полуниця • Мигдаль • Віскі-карамель", image: "img/ojas.jpg", intention: "Наповнює тіло життям, пробуджує задоволення, виводить з апатії.", tags: ["sensuality", "pleasure", "joy", "body-connection", "energy"], 
+                  details: { title: "OJAS: Життєва енергія", description: "В аюрведі Ojas — це суть здоров’я, еліксир, що живе в серці. Пов'язаний з чакрою Свадхістхана.", affirmation: "«Я приймаю своє тіло. Я сяю із середини.»", notes: { top: "Полуниця, вишня, кавун", heart: "Мигдаль, жасмін, квіти бавовни", base: "Мускус, ваніль, віскі-карамель" }, properties: "Наповнює тіло життям, пробуджує задоволення та підтримує жіночий гормональний баланс." }
+                },
+                { category: "perfumes", id: 23, name: "Парфум TEJAS", frequency: "Лимон • Ладан • Шипр", image: "img/tejas.jpg", intention: "Дає силу, витримку, впевненість та відкриває простір сміливих рішень.", tags: ["energy", "focus", "clarity", "new-start"],
+                  details: { title: "TEJAS: Внутрішній вогонь", description: "Вогонь трансформації, сила волі, розуміння і світла дія. Пов'язаний з чакрою Маніпура.", affirmation: "«Я дію з ясністю. Я творю свій світ.»", notes: { top: "Лимон, бергамот, цитрусове дерево", heart: "Чоловіча троянда, ладан, квіти мокко", base: "Шипр, гаякове дерево, ваніль" }, properties: "Цей аромат відкриває “сонячний центр” - простір сміливих рішень та впевненості." }
+                },
+                { category: "perfumes", id: 24, name: "Парфум PREMA", frequency: "Груша • Сакура • Лотос", image: "img/prema.jpg", intention: "Зцілює сердечну сферу, пробуджує ніжність, довіру й емпатію.", tags: ["heart-opening", "tenderness", "love", "lightness"],
+                  details: { title: "PREMA: Божественна любов", description: "Божественний стан любові, що лікує серце. Ідеально втілює суть чакри Анахата.", affirmation: "«Я люблю. Я приймаю. Моє серце відкрите.»", notes: { top: "Груша, анчан, мандарин", heart: "Сакура, лотос, конвалія", base: "Ваніль, мускус, петрикор" }, properties: "Прибирає жорсткість, пробуджує ніжність, довіру й емпатію." }
+                },
+                { category: "perfumes", id: 25, name: "Парфум SAMA", frequency: "М’ята • Льон • Орхідея", image: "img/sama.jpg", intention: "Заспокоює, надає ясність і охайність думки.", tags: ["balance", "calm", "clarity", "emotional-reset"],
+                  details: { title: "SAMA: Рівновага та гармонія", description: "Внутрішній баланс, стан рівноваги розуму і серця. Пов'язаний з чакрою Вішуддха.", affirmation: "«Я гармонія. Моє слово - світло.»", notes: { top: "М’ята, лимон, бергамот", heart: "Льон , орхідея, квіти мокко", base: "Ваніль, скошена трава, мускус" }, properties: "Допомагає бути в потоці, зберігати спокій і чути своє “так” і “ні”." }
+                },
+                { category: "perfumes", id: 26, name: "Парфум SHANTA", frequency: "Лаванда • Сандал • Ладан", image: "img/shanta.jpg", intention: "Відключає шум, налаштовує на тишу і концентрацію.", tags: ["intuition", "focus", "calm", "depth", "meditation"],
+                  details: { title: "SHANTA: Спокій та тиша", description: "Глибокий стан тиші, у якому більше немає боротьби. Стан спостерігача. Пов'язаний з чакрою Аджна.", affirmation: "«Я бачу. Я спостерігаю. Я довіряю собі.»", notes: { top: "Анчан, лаванда, бергамот", heart: "Індійський сандал, ладан, жасмін", base: "Мускус, орхідея, гаякове дерево" }, properties: "Дає спокій і чутливість, що не потребує контролю." }
+                },
+                { category: "perfumes", id: 27, name: "Парфум TURIYA", frequency: "Кавун • Білі квіти • Ладан", image: "img/turiya.jpg", intention: "Підходить для медитації, творчості, усамітнення.", tags: ["meditation", "spirituality", "depth", "cleansing"],
+                  details: { title: "TURIYA: Чиста присутність", description: "Четвертий стан свідомості, за межами сну і мислення. Стан чистого “є”. Пов'язаний з чакрою Сахасрара.", affirmation: "«Я - частина цілого. Я - тиша. Я - світло.»", notes: { top: "Кавун, бергамот, анчан", heart: "Білі квіти, орхідея, жасмін", base: "Ладан, ваніль, петрикор" }, properties: "Відкриває простір. Підходить для медитації та творчості. Проникливий, але легкий." }
+                }
+            ];
+            
+            const quizForm = document.getElementById('quiz-form');
+            const productsGrid = document.getElementById('products-grid');
+            const switcher = document.getElementById('product-switcher');
+            const gallery = document.getElementById('scrolling-gallery');
+
+            function observeElements() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            }
+            
+            function renderProducts(productsToRender) {
+                if (!productsGrid) return;
+                productsGrid.innerHTML = '';
+                productsToRender.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card reveal';
+                    card.dataset.id = product.id; 
+                    
+                    const cardInnerHTML = `<div class="product-card-inner"><div class="product-card-front"><div class="product-image-wrapper"><img src="${product.image}" alt="Аромат ${product.name}"></div><div class="card-content-wrapper"><h3>${product.name}</h3><div class="frequency">${product.frequency}</div><p class="intention">${product.intention}</p><div class="price">${product.price}</div><button class="add-to-cart-button">Додати у кошик</button></div></div><div class="product-card-back"><div class="product-card-back-content"><h4>${product.details.title}</h4><p>${product.details.description}</p>${product.details.notes ? `<h4>Ноти:</h4><ul class="notes-list"><li><strong>Верхні:</strong> ${product.details.notes.top}</li><li><strong>Серце:</strong> ${product.details.notes.heart}</li><li><strong>База:</strong> ${product.details.notes.base}</li></ul>` : ''}<h4>Властивості:</h4><p>${product.details.properties}</p>${product.details.affirmation ? `<p><strong>Афірмація:</strong> <em>${product.details.affirmation}</em></p>` : ''}</div><div class="price-cta-wrapper"><div class="price">${product.price}</div><button class="add-to-cart-button">Додати у кошик</button></div></div></div>`;
+                    card.innerHTML = cardInnerHTML;
+                    productsGrid.appendChild(card);
+                });
+                observeElements();
+            }
+            
+            // ▼▼▼ НОВА ФУНКЦІЯ ДЛЯ ЗАПОВНЕННЯ ГАЛЕРЕЇ ▼▼▼
+
+            const galleryImageUrls = [
+            "img/gallery/1.jpg",
+            "img/gallery/2.jpg",
+            "img/gallery/3.jpg",
+            "img/gallery/4.jpg",
+            "img/gallery/5.jpg",
+            "img/gallery/6.jpg",
+            "img/gallery/7.jpg",
+            "img/gallery/8.jpg"
+            ];
+
+            // ▼▼▼ ОНОВЛЕНА ФУНКЦІЯ ДЛЯ ЗАПОВНЕННЯ ГАЛЕРЕЇ ▼▼▼
+            function populateGallery() {
+                if (!gallery) return;
+                gallery.innerHTML = '';
+                galleryImageUrls.forEach(imageUrl => {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item reveal';
+                    galleryItem.style.backgroundImage = `url('${imageUrl}')`;
+                    gallery.appendChild(galleryItem);
+                });
+                observeElements();
+            }
+
+            
+            
+            productsGrid.addEventListener('click', function(event) {
+                if (event.target.closest('.add-to-cart-button')) {
+                    console.log('Додано в кошик!');
+                    return;
+                }
+                const card = event.target.closest('.product-card');
+                if (card) {
+                    card.classList.toggle('is-flipped');
+                }
+            });
+            
+            if (quizForm) {
+                const stateSelect = document.getElementById('state-select');
+                const metaphorSelect = document.getElementById('metaphor-select');
+
+                quizForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const userTags = [...stateSelect.value.split(','), ...metaphorSelect.value.split(',')];
+                    
+                    let bestMatches = [];
+                    let maxScore = 0;
+
+                    allProducts.forEach(prod => {
+                        let currentScore = 0;
+                        prod.tags.forEach(tag => { if (userTags.includes(tag)) { currentScore++; } });
+
+                        if (currentScore > maxScore) {
+                            maxScore = currentScore;
+                            bestMatches = [prod];
+                        } else if (currentScore === maxScore && maxScore > 0) {
+                            bestMatches.push(prod);
+                        }
+                    });
+
+                    if (bestMatches.length > 0) {
+                        const finalMatch = bestMatches[Math.floor(Math.random() * bestMatches.length)];
+                        
+                        const targetCategory = finalMatch.category;
+                        const switcherButtons = switcher.querySelectorAll('.switcher-btn');
+                        let isCategoryVisible = false;
+                        switcherButtons.forEach(btn => {
+                            if(btn.dataset.category === targetCategory && btn.classList.contains('active')){
+                                isCategoryVisible = true;
+                            }
+                            btn.classList.toggle('active', btn.dataset.category === targetCategory);
+                        });
+                        
+                        if(!isCategoryVisible) {
+                            const filteredProducts = allProducts.filter(p => p.category === targetCategory);
+                            renderProducts(filteredProducts);
+                        }
+                        
+                        setTimeout(() => {
+                            const recommendedCard = productsGrid.querySelector(`.product-card[data-id='${finalMatch.id}']`);
+                            if (recommendedCard) {
+                                recommendedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                recommendedCard.classList.add('is-highlighted');
+                                
+                                setTimeout(() => {
+                                    recommendedCard.classList.remove('is-highlighted');
+                                }, 3500);
+                            }
+                        }, 150);
+                    } else {
+                        alert("На жаль, не вдалося підібрати аромат. Спробуйте іншу комбінацію.");
+                    }
+                });
+            }
+
+            const initialProducts = allProducts.filter(p => p.category === 'candles');
+            renderProducts(initialProducts);
+            populateGallery(); // Запускаємо заповнення галереї
+
+            if (switcher) {
+                switcher.addEventListener('click', function(event) {
+                    if (event.target.tagName !== 'BUTTON' || event.target.classList.contains('active')) return;
+                    switcher.querySelectorAll('.switcher-btn').forEach(btn => btn.classList.remove('active'));
+                    event.target.classList.add('active');
+                    const selectedCategory = event.target.dataset.category;
+                    const filteredProducts = allProducts.filter(product => product.category === selectedCategory);
+                    renderProducts(filteredProducts);
+                });
+            }
+            
+            const affirmations = [ "Я вдихаю спокій і видихаю напругу.", "Моя енергія гармонійна та збалансована." ];
+            const affirmationEl = document.getElementById('affirmation-text');
+            if (affirmationEl) {
+                const randomIndex = Math.floor(Math.random() * affirmations.length);
+                affirmationEl.textContent = `"${affirmations[randomIndex]}"`;
+            }
+        });
+    </script>
+</body>
+</html>
